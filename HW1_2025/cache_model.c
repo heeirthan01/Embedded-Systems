@@ -185,9 +185,9 @@ void jump(void) {
 }
 
 // For problem a
-int avg_cycle(int runs, bool cache_status, bool randjump)
+int *avg_cycle(int runs, bool cache_status, bool randjump)
 {
-	
+	int *run_times = malloc(runs * sizeof(int));	
 	cm_init();
 	if (cache_status == true)
 	{
@@ -205,6 +205,7 @@ int avg_cycle(int runs, bool cache_status, bool randjump)
 		int s = rand_int(b);
 		cm_do_access(s);
 		int ac = cm_get_last_access_cycles();
+		run_times[i] = ac;
 		sumtime += ac;
 		printf("Runtime in cycels for run %f is %d\n", i, ac);
 		if (randjump == true)
@@ -215,11 +216,11 @@ int avg_cycle(int runs, bool cache_status, bool randjump)
 	}
 	float avgtime = sumtime / runs;
 	printf("Average run time over %d runs is: %.2f cycles\n", runs, avgtime);
-	return avgtime;
+	return run_times;
 }
 
 // Part b
-bool check_in_range(int address, int new_address)
+bool check_in_range(int address, int new_address) // Make sure we are outside the p range
 {
 	if (new_address < address - 40 || new_address > address + 40)
 	{
@@ -228,7 +229,7 @@ bool check_in_range(int address, int new_address)
 	return false;
 }
 
-int rnd_genb(int address)
+int rnd_genb(int address) // address sampler
 {
 	double r = (double)rand() / RAND_MAX; 
 	double s = 0.6;
@@ -261,8 +262,9 @@ int rnd_genb(int address)
 
 }
 
-int part_b(int runs, bool cache_status, bool randjump)
+int *part_b(int runs, bool cache_status, bool randjump)
 {
+	int *run_times = malloc(runs * sizeof(int));
 	int b = CM_ADDRESS_SPACE_SIZE;
 	int s = rand_int(b);
 	srand(time(0));
@@ -288,8 +290,9 @@ int part_b(int runs, bool cache_status, bool randjump)
 
 		cm_do_access(s);
 		int ac = cm_get_last_access_cycles();
+		run_times[i] = ac;
 		sumtime += ac;
-		printf("Runtime in cycels for run %f is %d\n", i, ac);
+		printf("Runtime in cycels for run %d is %d\n", i, ac);
 
 		if (randjump == true)
 		{
@@ -299,18 +302,37 @@ int part_b(int runs, bool cache_status, bool randjump)
 	}
 	float avgtime = sumtime / runs;
 	printf("Average run time over %d runs is: %.2f cycles\n", runs, avgtime);
-	return avgtime;
+	return run_times;
+}
+
+void save_array(int *arr, int n, char *filename)
+{
+	FILE *fp = fopen(filename, "w"); // Open file in write mode
+
+	if (fp == NULL) {
+		printf("Error opening file!\n");
+		return;
+	}
+	for (int i = 0; i < n; i++) {
+		fprintf(fp, "%d ", arr[i]); // Write each integer followed by a space
+	}
+	fclose(fp);
 }
 
 int main(){
 	// Part a
 	int r = 10000;
-	bool cache_stat = true; // cache on or off
-	bool randj = false; // with or without guaranteed new sequence
-	//float avgt = avg_cycle(r, cache_stat, randj);
+	bool cache_stat = false; // cache on or off
+	bool randj = true; // with or without guaranteed new sequence
+	//int *avgt = avg_cycle(r, cache_stat, randj);
+	// save_array(avgt, r, "part_a_wcache.txt");
+	//free(avgt);
 
 	// Part b
-	int ev = part_b(r, cache_stat, randj);
+	int *ev = part_b(r, cache_stat, randj);
+	int n = sizeof(ev) / sizeof(ev[0]);
+	save_array(ev, r, "part_b_nocache.txt");
+	free(ev);
 	return 0;
 }
 
