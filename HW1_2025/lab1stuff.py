@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from stats import calc_cdf
 
-exercises = ['1', '2', '3', '4']#, '5']
+exercises = ['1', '2', '3', '4', '5', '6']
 num_trials = ['5', '15', '25', '40']
 for exercise in exercises:
     num_trials_arr = []
@@ -14,6 +14,9 @@ for exercise in exercises:
             els = []
             for line in f.readlines():
                 if i < 8:
+                    i += 1
+                    continue
+                if line[0] == '-' or line[0] == 'a':
                     i += 1
                     continue
 
