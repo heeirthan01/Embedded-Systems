@@ -45,7 +45,7 @@ for exercise in exercises:
             plt.ylabel('CDF')
             plt.grid(True)
             plt.savefig("lab_plots_etc/exercise_"+exercise+"_trials_"+num_trial+"_cdf.png", dpi=300, bbox_inches="tight")
-            #plt.show()
+            plt.show()
 
     # linear regression
     means = np.array(means)
@@ -57,8 +57,8 @@ for exercise in exercises:
     plt.plot(num_trials_arr, m*np.array(num_trials_arr) + b, color='red', label='Linear Fit')
     plt.scatter(num_trials_arr, means)
     plt.savefig("lab_plots_etc/exercise_"+exercise+"_mean_vs_trials.png", dpi=300, bbox_inches="tight")
-    #plt.show()
+    plt.show()
     plt.hist(means, bins=30)
     plt.title(f'Exercise {exercise} Mean Access Cycles Distribution')
     plt.savefig("lab_plots_etc/exercise_"+exercise+"_mean_hist.png", dpi=300, bbox_inches="tight")
-    #plt.show()
+    plt.show()
