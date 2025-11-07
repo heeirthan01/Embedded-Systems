@@ -40,20 +40,25 @@ if __name__ == '__main__':
             vals += cycle * count
             a = np.ones(int(count), dtype=int) 
             arrtot = np.concatenate((arrtot, a * cycle))
-        means.append(vals / counts)
+        if counts == 0:
+            means.append(0)
+            cfd = [0, 0]
+        else:
+            means.append(vals / counts)
+            cfd = np.percentile(arrtot, [2.5, 97.5])
+            #CDF stuff
+            cum_cts = np.cumsum(cdf)
+            cdf_vals = cum_cts / counts
+            plt.step(x, cdf_vals, where='post')
+            plt.title('CDF of Service Time for interrupt '+str(i))
+            plt.xlabel('Service Time (cycles)')
+            plt.ylabel('CDF')
+            #plt.savefig("plots/cdf_for_interrupt"+str(i)+".png", dpi=300, bbox_inches="tight")
+            plt.show()
         
         #Confidence interval
-        cfd = np.percentile(arrtot, [2.5, 97.5])
-        print(f' Mean service time: {vals / counts} and 95% confidence interval: {cfd} for interrupt {i}')
-        #CDF stuff
-        cum_cts = np.cumsum(cdf)
-        cdf_vals = cum_cts / counts
-        plt.step(x, cdf_vals, where='post')
-        plt.title('CDF of Service Time for interrupt '+str(i))
-        plt.xlabel('Service Time (cycles)')
-        plt.ylabel('CDF')
-        #plt.savefig("plots/cdf_for_interrupt"+str(i)+".png", dpi=300, bbox_inches="tight")
-        plt.show()
+        print(f' Mean service time: {means[i]} and 95% confidence interval: {cfd} for interrupt {i}')
+        
         i+=1
     
 

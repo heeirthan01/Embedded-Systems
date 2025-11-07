@@ -5,7 +5,7 @@
 struct INTERRUPT_TAG interrupt_data[INTERRUPTS] = {
 	{.prob = 0.1, .priority = 1, .run_time = 3, .max_latency = 3, .active = 0, .missed = 0, .pending = 0, .start_time = 0, .arrive_time_present = 0, .arrive_time_next = 0},
 	{.prob = 0.03, .priority = 2, .run_time = 5, .max_latency = 5, .active = 0, .missed = 0, .pending = 0, .start_time = 0, .arrive_time_present = 0, .arrive_time_next = 0},
-    {.prob = 0.001, .priority = 3, .run_time = 7, .max_latency = 5, .active = 0, .missed = 0, .pending = 0, .start_time = 0, .arrive_time_present = 0, .arrive_time_next = 0}};
+    {.prob = 0.001, .priority = 0, .run_time = 7, .max_latency = 5, .active = 0, .missed = 0, .pending = 0, .start_time = 0, .arrive_time_present = 0, .arrive_time_next = 0}};
 
 #define MAX_TIME 100
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
